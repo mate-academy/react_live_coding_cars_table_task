@@ -49,7 +49,7 @@ export const App: React.FC = () => {
               </td>
 
               <td>
-                {}
+                {car.color?.name}
               </td>
 
               <td>
