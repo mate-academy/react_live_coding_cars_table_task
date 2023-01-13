@@ -32,6 +32,10 @@ export const App: React.FC = () => {
     });
   }
 
+  if (pickAColor > 0) {
+    visibleCars = carWithColor.filter(el => el.colorId === pickAColor);
+  }
+
   return (
     <div>
       <input
@@ -45,7 +49,7 @@ export const App: React.FC = () => {
         onChange={(el) => setPickAColor(+el.target.value)}
         value={pickAColor}
       >
-        <option value={0} disabled>Chose a color</option>
+        <option value={0}>Chose a color</option>
         {colorsFromServer.map(el => (
           // eslint-disable-next-line
           <option
