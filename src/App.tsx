@@ -13,7 +13,7 @@ const getCarsWithColors = (): CarsWithColor[] => {
   return carsFromServer.map(car => ({
     ...car,
     color: colorsFromServer
-      .find(color => color.id === carsFromServer.colorId) || null,
+      .find(color => color.id === car.colorId) || null,
   }));
 };
 
@@ -49,7 +49,7 @@ export const App: React.FC = () => {
               </td>
 
               <td>
-                {car.color}
+                {}
               </td>
 
               <td>
