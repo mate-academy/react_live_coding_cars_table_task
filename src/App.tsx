@@ -1,12 +1,26 @@
-import React from 'react';
-// import carsFromServer from './api/cars';
-// import colorsFromServer from './api/colors';
+import React, { useState } from 'react';
+import cars from './api/cars';
+import { CarWithColor } from './types/car';
+import colors from './api/colors';
 
 // 1. Render car with color
 // 2. Add ability to filter car by brand name
 // 3. Add ability to filter car by color
 
+const preparedCar = (): CarWithColor[] => {
+  return cars.map(car => {
+    const color = colors.find(c => c.id === car.colorId)
+
+    return {
+      ...car,
+      color,
+    };
+  });
+};
+
 export const App: React.FC = () => {
+  const [cars] = useState(preparedCar);
+
   return (
     <div>
       <input type="search" placeholder="Find by car brand" />
@@ -16,7 +30,8 @@ export const App: React.FC = () => {
       </select>
 
       <table>
-        <thead>
+        {cars.map(car => (
+          <thead>
           <tr>
             <th>Id</th>
             <th>Brand</th>
@@ -24,6 +39,8 @@ export const App: React.FC = () => {
             <th>Rent price</th>
           </tr>
         </thead>
+        ))}
+
         <tbody>
           <tr>
             <td>1</td>
