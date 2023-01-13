@@ -1,10 +1,24 @@
 import React from 'react';
-// import carsFromServer from './api/cars';
-// import colorsFromServer from './api/colors';
+import carsFromServer from './api/cars';
+import colorsFromServer from './api/colors';
+import { CarWithColor } from './types';
 
 // 1. Render car with color
 // 2. Add ability to filter car by brand name
 // 3. Add ability to filter car by color
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const getCarsWithColor = (): CarWithColor[] => (
+  carsFromServer.map(car => {
+    const color = colorsFromServer.find(oneColor => (
+      car.colorId === oneColor.id
+    ));
+
+    return {
+      ...car,
+      color,
+    };
+  })
+);
 
 export const App: React.FC = () => {
   return (
@@ -14,7 +28,6 @@ export const App: React.FC = () => {
       <select>
         <option>Chose a color</option>
       </select>
-
       <table>
         <thead>
           <tr>
