@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import carsFromServer from './api/cars';
 import colorsFromServer from './api/colors';
+import 'bulma/css/bulma.css';
 
 // 1. Render car with color
 // 2. Add ability to filter car by brand name
@@ -19,6 +20,12 @@ export const App: React.FC = () => {
   const [query, setQuery] = useState('');
 
   const [pickAColor, setPickAColor] = useState(0);
+
+  const handleReset = () => {
+    setQuery('');
+    setPickAColor(0)
+  }
+  const shouldRestButton = query || pickAColor > 0;
 
   let visibleCars = carWithColor;
 
@@ -39,6 +46,8 @@ export const App: React.FC = () => {
   return (
     <div>
       <input
+        className="input is-primary"
+        style={{ width: 'max-content', margin: '0 20px'}}
         type="search"
         placeholder="Find by car brand"
         value={query}
@@ -46,6 +55,8 @@ export const App: React.FC = () => {
       />
 
       <select
+        className="input is-primary"
+        style={{ width: 'max-content', margin: '0 20px' }}
         onChange={(el) => setPickAColor(+el.target.value)}
         value={pickAColor}
       >
@@ -59,6 +70,16 @@ export const App: React.FC = () => {
             {el.name}
           </option>))}
       </select>
+
+      {shouldRestButton && (
+        <button
+          className="button is-danger"
+          type="button"
+          onClick={handleReset}
+          style={{ margin: '0 10px' }}
+        >
+          Reset
+        </button>)}
 
       <table>
         <thead>
