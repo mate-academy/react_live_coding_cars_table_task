@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import carsFromServer from './api/cars';
-// import colorsFromServer from './api/colors';
+import colorsFromServer from './api/colors';
 
 // 1. Render car with color
 // 2. Add ability to filter car by brand name
 // 3. Add ability to filter car by color
 
-const findCarbyId = (colorId: number) => {
-  carsFromServer.find(el => el.id === colorId);
-};
+const findCarbyId = (id: number) => (
+  colorsFromServer.find(el => el.id === id)
+);
 
 const carWithColor = carsFromServer.map(el => ({
   ...el,
@@ -16,12 +16,44 @@ const carWithColor = carsFromServer.map(el => ({
 }));
 
 export const App: React.FC = () => {
+  const [query, setQuery] = useState('');
+
+  const [pickAColor, setPickAColor] = useState(0);
+
+  let visibleCars = carWithColor;
+
+  if (query) {
+    const lowerQuery = query.toLocaleLowerCase();
+
+    visibleCars = carWithColor.filter(el => {
+      const stringToCheck = el.brand;
+
+      return stringToCheck.toLocaleLowerCase().includes(lowerQuery);
+    });
+  }
+
   return (
     <div>
-      <input type="search" placeholder="Find by car brand" />
+      <input
+        type="search"
+        placeholder="Find by car brand"
+        value={query}
+        onChange={el => setQuery(el.target.value)}
+      />
 
-      <select>
-        <option>Chose a color</option>
+      <select
+        onChange={(el) => setPickAColor(+el.target.value)}
+        value={pickAColor}
+      >
+        <option value={0} disabled>Chose a color</option>
+        {colorsFromServer.map(el => (
+          // eslint-disable-next-line
+          <option
+            value={el.id}
+            key={el.id}
+          >
+            {el.name}
+          </option>))}
       </select>
 
       <table>
@@ -34,11 +66,11 @@ export const App: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {carWithColor.map(el => (
+          {visibleCars.map(el => (
             <tr>
               <td>{el.id}</td>
               <td>{el.brand}</td>
-              <td style={{ color: 'red' }}>color</td>
+              <td style={{ color: `${el.color?.name}` }}>{el.color?.name}</td>
               <td>{el.rentPrice}</td>
             </tr>
           ))}
