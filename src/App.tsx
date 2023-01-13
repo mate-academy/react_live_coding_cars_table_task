@@ -1,8 +1,11 @@
 import React from 'react';
-
+import cars from './api/cars';
 import carsFromServer from './api/cars';
-
+import colors from './api/colors';
 import colorsFromServer from './api/colors';
+import cn from classNames;
+
+import { Cars, Colors, CarsWithColor } from './Types/Types';
 
 // 1. Render car with color
 // 2. Add ability to filter car by brand name
@@ -44,7 +47,7 @@ export const App: React.FC = () => {
               <tr key={car.id}>
                 <td>{car.id}</td>
                 <td>{car.brand}</td>
-                <td style={{ color: 'red' }}>{car.colorName?.name}</td>
+                <td style={{ color: "red" }}>{car.colorName?.name}</td>
                 <td>{car.rentPrice}</td>
               </tr>
             );
