@@ -12,22 +12,23 @@ table {
   width: 100%;
 }
 
+tr {
+  background-color: #bbd3fa;
+}
+
 thead {
   color: white;
 }
 
-thead tr{
+thead tr {
   background-color: #0e3a80;
 }
 
-td, th {
-  border: 1px solid #dddddd;
+td,
+th {
+  border: 1px solid #ddd;
   text-align: left;
   padding: 8px;
-}
-
-tr {
-  background-color: #bbd3fa;
 }
 
 tr:nth-child(even) {
