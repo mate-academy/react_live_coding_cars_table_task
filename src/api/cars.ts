@@ -1,6 +1,6 @@
 export default [
   {
-    id: 1, brand: 'Audi', rentPrice: 100, colorId: 1,
+
   },
   {
     id: 2, brand: 'Audi', rentPrice: 100, colorId: 2,
