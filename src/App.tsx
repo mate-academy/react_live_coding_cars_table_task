@@ -1,11 +1,6 @@
-import React from 'react';
-import cars from './api/cars';
+import React, { useState } from 'react';
 import carsFromServer from './api/cars';
-import colors from './api/colors';
 import colorsFromServer from './api/colors';
-import cn from classNames;
-
-import { Cars, Colors, CarsWithColor } from './Types/Types';
 
 // 1. Render car with color
 // 2. Add ability to filter car by brand name
@@ -23,12 +18,36 @@ const autoWithColor = carsFromServer.map(car => {
 });
 
 export const App: React.FC = () => {
+  const [autos] = useState(autoWithColor);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [pickColor, setPickColor] = useState(0);
+
+  const preparedSearchQuery = searchQuery.toLocaleLowerCase();
+  const visibleCars = autos.filter(car => (
+    car.brand?.toLocaleLowerCase().includes(preparedSearchQuery)));
+
   return (
     <div>
-      <input type="search" placeholder="Find by car brand" />
+      <input
+        type="search"
+        placeholder="Find by car brand"
+        value={searchQuery}
+        onChange={(event) => setSearchQuery(event.target.value)}
+      />
 
-      <select>
-        <option>Chose a color</option>
+      <select
+        value={pickColor}
+        onChange={(event) => setPickColor(+event.target.value)}
+      >
+        <option value={0}>Chose a color</option>
+        {colorsFromServer.map(color => (
+          <option
+            value={color.id}
+            key={color.id}
+          >
+            {color.name}
+          </option>
+        ))}
       </select>
 
       <table>
@@ -42,12 +61,14 @@ export const App: React.FC = () => {
         </thead>
         <tbody>
 
-          {autoWithColor.map((car) => {
+          {visibleCars.map((car) => {
             return (
               <tr key={car.id}>
                 <td>{car.id}</td>
                 <td>{car.brand}</td>
-                <td style={{ color: "red" }}>{car.colorName?.name}</td>
+                <td style={{ color: car.colorName?.name }}>
+                  {car.colorName?.name}
+                </td>
                 <td>{car.rentPrice}</td>
               </tr>
             );

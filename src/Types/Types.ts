@@ -10,6 +10,6 @@ export interface Colors {
   name?: string
 }
 
-export interface AutoWithColor extends Cars {
+export interface CarsWithColor extends Cars {
   name?: string;
 }
