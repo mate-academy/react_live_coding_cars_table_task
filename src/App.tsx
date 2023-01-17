@@ -21,12 +21,13 @@ const getNewColoredCar = (): FullCarsList[] => (
 export const App: React.FC = () => {
   const [cars] = useState(getNewColoredCar);
   const [query, setQuery] = useState('');
+  const [color, setColor] = useState(1);
 
   let visibleCars = cars;
 
   if (query) {
     visibleCars = cars.filter(
-      car => car.brand.toLowerCase().includes(query.toLowerCase())
+      car => car.brand.toLowerCase().includes(query.toLowerCase()),
     );
   }
 
@@ -39,7 +40,10 @@ export const App: React.FC = () => {
         onChange={event => setQuery(event.target.value)}
       />
 
-      <select>
+      <select
+        value={color}
+        onChange={event => setColor(+event.target.value)}
+      >
         <option>Chose a color</option>
       </select>
 
@@ -49,7 +53,7 @@ export const App: React.FC = () => {
             <tr>
               <th>{car.id}</th>
               <th>{car.brand}</th>
-              <th>{car.color?.name}</th>
+              <th style={{ color: car.color?.name }}>{car.color?.name}</th>
               <th>{car.rentPrice}</th>
             </tr>
           ))}
