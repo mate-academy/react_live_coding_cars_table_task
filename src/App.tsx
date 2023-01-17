@@ -22,6 +22,7 @@ export const App: React.FC = () => {
   const [cars] = useState(getNewColoredCar);
   const [query, setQuery] = useState('');
   const [chosenColor, setChosenColor] = useState('');
+  const [chosenPrice, setChosenPrice] = useState('');
 
   let visibleCars = cars;
 
@@ -33,6 +34,10 @@ export const App: React.FC = () => {
 
   if (chosenColor) {
     visibleCars = visibleCars.filter(c => c.color?.name === chosenColor);
+  }
+
+  if (chosenPrice) {
+    visibleCars = visibleCars.filter(c => c.rentPrice <= +chosenPrice);
   }
 
   return (
@@ -52,6 +57,16 @@ export const App: React.FC = () => {
         <option value="white">white</option>
         <option value="black">black</option>
         <option value="red">red</option>
+      </select>
+
+      <select
+        value={chosenPrice}
+        onChange={event => setChosenPrice(event.target.value)}
+      >
+        <option value="">Chose by price</option>
+        <option value="100">less then 100</option>
+        <option value="200">less then 200</option>
+        <option value="500">less then 500</option>
       </select>
 
       <table>
