@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import carsFromServer from './api/cars';
 import colorsFromServer from './api/colors';
 import { CarFull } from './types/Types';
@@ -18,12 +17,17 @@ const fullCar:CarFull[] = carsFromServer.map(car => {
 
 export const App: React.FC = () => {
   const [carName, setCarName] = useState('');
+  const [colorNumber, setColorNumber] = useState(0);
   const [cars] = useState(fullCar);
   let filteredCarsByName = cars;
 
   if (carName) {
     filteredCarsByName = cars
       .filter(car => (car.brand.toLowerCase()).includes(carName.toLowerCase()));
+  }
+
+  if (colorNumber !== 0) {
+    filteredCarsByName = cars.filter(car => car.color?.id === colorNumber);
   }
 
   return (
@@ -35,8 +39,19 @@ export const App: React.FC = () => {
         onChange={(event) => setCarName(event.target.value)}
       />
 
-      <select value={0}>
-        <option>Chose a color</option>
+      <select
+        value={colorNumber}
+        onChange={(event) => setColorNumber(+event.target.value)}
+      >
+        <option defaultValue={0} disabled>Chose a color</option>
+        {colorsFromServer.map(color => (
+          <option
+            value={color.id}
+            key={color.id}
+          >
+            {color.name}
+          </option>
+        ))}
       </select>
 
       <table>
@@ -50,7 +65,7 @@ export const App: React.FC = () => {
         </thead>
         <tbody>
           {filteredCarsByName.map(car => (
-            <tr>
+            <tr key={car.id}>
               <td>{car.id}</td>
               <td>{car.brand}</td>
               <td style={{ color: car.color?.name }}>{car.color?.name}</td>
