@@ -22,15 +22,13 @@ export const App: React.FC = () => {
   const [cars] = useState(getNewColoredCar);
   const [query, setQuery] = useState('');
 
-  // const getNewCars = () => (
-  //   cars.map(car => car.brand.toLowerCase().includes(query.toLowerCase()))
-  // );
+  let visibleCars = cars;
 
-  // const visibleCars = getNewCars();
-
-  // if (visibleCars) {
-  //   cars.filter(car => car.brand.toLowerCase().includes(query.toLowerCase()));
-  // }
+  if (query) {
+    visibleCars = cars.filter(
+      car => car.brand.toLowerCase().includes(query.toLowerCase())
+    );
+  }
 
   return (
     <div>
@@ -47,7 +45,7 @@ export const App: React.FC = () => {
 
       <table>
         <thead>
-          {cars.map(car => (
+          {visibleCars.map(car => (
             <tr>
               <th>{car.id}</th>
               <th>{car.brand}</th>
