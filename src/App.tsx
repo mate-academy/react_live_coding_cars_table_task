@@ -42,7 +42,8 @@ export const App: React.FC = () => {
   }
 
   if (chosenPrice) {
-    visibleCars = visibleCars.filter(c => c.rentPrice <= +chosenPrice);
+    visibleCars = visibleCars.filter(c => c.rentPrice <= +chosenPrice)
+      || chosenColor[0];
   }
 
   return (
