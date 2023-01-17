@@ -21,7 +21,7 @@ const getNewColoredCar = (): FullCarsList[] => (
 export const App: React.FC = () => {
   const [cars] = useState(getNewColoredCar);
   const [query, setQuery] = useState('');
-  const [color, setColor] = useState(1);
+  const [color, setColor] = useState(0);
 
   let visibleCars = cars;
 
@@ -41,10 +41,13 @@ export const App: React.FC = () => {
       />
 
       <select
-        value={color}
         onChange={event => setColor(+event.target.value)}
+        value={color}
       >
-        <option>Chose a color</option>
+        <option value="">Chose a color</option>
+        <option value="white">white</option>
+        <option value="black">black</option>
+        <option value="red">red</option>
       </select>
 
       <table>
