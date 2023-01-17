@@ -3,6 +3,7 @@ export interface Cars {
   brand: string,
   rentPrice: number,
   colorId: number,
+  info: string,
 }
 
 export interface Colors {

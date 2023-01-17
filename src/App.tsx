@@ -7,14 +7,14 @@ import { FullCarsList } from './types';
 // 2. Add ability to filter car by brand name
 // 3. Add ability to filter car by color
 
-const finColor = (colorId: number) => (
+const findColor = (colorId: number) => (
   colors.find(c => c.id === colorId)
 );
 
 const getNewColoredCar = (): FullCarsList[] => (
   carsFromServer.map(car => ({
     ...car,
-    color: finColor(car.colorId),
+    color: findColor(car.colorId),
   }))
 );
 
@@ -27,9 +27,14 @@ export const App: React.FC = () => {
   let visibleCars = cars;
 
   if (query) {
-    visibleCars = cars.filter(
-      car => car.brand.toLowerCase().includes(query.toLowerCase()),
-    );
+    visibleCars = cars.filter(car => {
+      const stringToCheck = `
+        ${car.brand}
+        ${car.info}
+      `;
+
+      return stringToCheck.toLowerCase().includes(query.toLowerCase());
+    });
   }
 
   if (chosenColor) {
@@ -75,6 +80,7 @@ export const App: React.FC = () => {
             <tr>
               <th>{car.id}</th>
               <th>{car.brand}</th>
+              <th>{car.info}</th>
               <th style={{ color: car.color?.name }}>{car.color?.name}</th>
               <th>{car.rentPrice}</th>
             </tr>
