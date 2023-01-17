@@ -21,7 +21,7 @@ const getNewColoredCar = (): FullCarsList[] => (
 export const App: React.FC = () => {
   const [cars] = useState(getNewColoredCar);
   const [query, setQuery] = useState('');
-  const [color, setColor] = useState(0);
+  const [chosenColor, setChosenColor] = useState('');
 
   let visibleCars = cars;
 
@@ -29,6 +29,10 @@ export const App: React.FC = () => {
     visibleCars = cars.filter(
       car => car.brand.toLowerCase().includes(query.toLowerCase()),
     );
+  }
+
+  if (chosenColor) {
+    visibleCars = visibleCars.filter(c => c.color?.name === chosenColor);
   }
 
   return (
@@ -41,8 +45,8 @@ export const App: React.FC = () => {
       />
 
       <select
-        onChange={event => setColor(+event.target.value)}
-        value={color}
+        onChange={event => setChosenColor(event.target.value)}
+        value={chosenColor}
       >
         <option value="">Chose a color</option>
         <option value="white">white</option>
