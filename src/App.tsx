@@ -8,21 +8,29 @@ import colorsFromServer from './api/colors';
 // 3. Add ability to filter car by color
 
 const carsWithColor = carsFromServer.map(car => {
-  const colors = colorsFromServer.find(color => color.id === car.colorId);
+  const colors = colorsFromServer.find(
+    color => color.id === car.colorId,
+  ) || null;
 
   return { ...car, colors };
 });
 
 export const App: React.FC = () => {
   const [brandName, setBrandName] = useState('');
-  // const [colorId, setColorId] = useState(0);
+  const [colorId, setColorId] = useState(0);
 
   let filteredCars = [...carsWithColor];
-  const correctBrandName = brandName;
+  const correctBrandName = brandName.toLowerCase();
 
   if (correctBrandName) {
     filteredCars = filteredCars.filter(
-      b => b.brand.includes(correctBrandName),
+      b => b.brand.toLowerCase().includes(correctBrandName),
+    );
+  }
+
+  if (colorId) {
+    filteredCars = filteredCars.filter(
+      c => c.colors?.id === colorId,
     );
   }
 
@@ -36,16 +44,21 @@ export const App: React.FC = () => {
       />
 
       <select>
-        <option>
+        <option
+          key={0}
+          onClick={() => setColorId(0)}
+        >
           Chose a color
         </option>
         {colorsFromServer.map(color => (
-          <option>
+          <option
+            key={color.id}
+            onClick={() => setColorId(color.id)}
+          >
             {color.name}
           </option>
         ))}
       </select>
-
       <table>
         <thead>
           <tr>
@@ -57,10 +70,14 @@ export const App: React.FC = () => {
         </thead>
         <tbody>
           {filteredCars.map(car => (
-            <tr>
+            <tr
+              key={car.id}
+            >
               <td>{car.id}</td>
               <td>{car.brand}</td>
-              <td style={{ color: `${car.colors?.name}` }}>{car.colors?.name}</td>
+              <td style={{ color: `${car.colors?.name}` }}>
+                {`${car.colors?.name[0].toUpperCase()}${car.colors?.name.slice(1)}`}
+              </td>
               <td>{car.rentPrice}</td>
             </tr>
           ))}
