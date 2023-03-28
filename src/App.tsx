@@ -13,32 +13,47 @@ type Car = {
   colorId: number;
 };
 
-// type Color = {
-//   id: number;
-//   name: string;
-// };
-
 export const App: React.FC = () => {
   const [selectedColor, setSelectedColor] = useState(0);
+  const [brandSearchBy, setBrandSearchBy] = useState('');
   const [carsToShow, setCarsToShow] = useState<Car[]>(carsFromServer);
 
   const getCarsByColorId = (color: number, carsArr: Car[]) => {
-    // const color = carsFromServer.find(({ id }) => colorId === id);
     return carsArr.filter(({ colorId }) => +color === colorId);
+  };
+
+  const getCarsByBrand = (queryString: string, carsArr: Car[]) => {
+    const query = queryString.toLowerCase().trim();
+
+    return carsArr
+      .filter(({ brand }) => brand.toLowerCase().includes(query));
   };
 
   useEffect(() => {
     const cars: Car[] = selectedColor === 0
       ? carsFromServer
-      : getCarsByColorId(selectedColor, carsFromServer);
+      : getCarsByColorId(selectedColor, carsToShow);
 
     setCarsToShow(cars);
   }, [selectedColor]);
+
+  useEffect(() => {
+    const cars = getCarsByBrand(brandSearchBy, carsToShow);
+
+    setCarsToShow(cars);
+  }, [brandSearchBy]);
 
   const handleSelectColor = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { target: { value } } = event;
 
     setSelectedColor(+value);
+  };
+
+  const handleSearchByBrand = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { target: { value } } = event;
+    const castedValue = value.replace(/[^A-Z,a-z]/g, '');
+
+    setBrandSearchBy(castedValue);
   };
 
   const getColorById = (idToFind: number) => {
@@ -47,7 +62,12 @@ export const App: React.FC = () => {
 
   return (
     <div>
-      <input type="search" placeholder="Find by car brand" />
+      <input
+        type="search"
+        placeholder="Find by car brand"
+        onChange={handleSearchByBrand}
+        value={brandSearchBy}
+      />
 
       <select
         onChange={handleSelectColor}
