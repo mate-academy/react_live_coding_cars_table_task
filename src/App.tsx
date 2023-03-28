@@ -25,14 +25,14 @@ export const App: React.FC = () => {
   const getCarsByBrand = (queryString: string, carsArr: Car[]) => {
     const query = queryString.toLowerCase().trim();
 
-    return carsArr
-      .filter(({ brand }) => brand.toLowerCase().includes(query));
+    return query !== ''
+      ? carsArr
+        .filter(({ brand }) => brand.toLowerCase().includes(query))
+      : carsToShow;
   };
 
   useEffect(() => {
-    const cars: Car[] = selectedColor === 0
-      ? carsFromServer
-      : getCarsByColorId(selectedColor, carsToShow);
+    const cars = getCarsByColorId(selectedColor, carsToShow);
 
     setCarsToShow(cars);
   }, [selectedColor]);
