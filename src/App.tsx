@@ -1,18 +1,65 @@
-import React from 'react';
-// import carsFromServer from './api/cars';
-// import colorsFromServer from './api/colors';
+/* eslint-disable no-console */
+import React, { useState } from 'react';
+import carsFromServer from './api/cars';
+import colorsFromServer from './api/colors';
 
-// 1. Render car with color
-// 2. Add ability to filter car by brand name
 // 3. Add ability to filter car by color
 
+const carsWithColors = carsFromServer.map(car => {
+  const findColor = colorsFromServer.find(color => (
+    color.id === car.colorId
+  ));
+
+  return {
+    ...car,
+    color: findColor,
+  };
+});
+
+console.log(carsWithColors);
+
 export const App: React.FC = () => {
+  const [query, setQuery] = useState('');
+  const [carColor, setCarColor] = useState('');
+
+  let vissbleCars = [...carsWithColors];
+
+  if (query) {
+    vissbleCars = vissbleCars.filter(car => {
+      const lowerQuery = query.toLowerCase();
+      const lowerBrand = car.brand.toLowerCase();
+
+      return lowerBrand.includes(lowerQuery);
+    });
+  }
+
+  console.log(carColor);
+
+  if (carColor.length) {
+    vissbleCars = vissbleCars.filter(car => car.color?.name === carColor);
+  }
+
   return (
     <div>
-      <input type="search" placeholder="Find by car brand" />
+      <input
+        type="search"
+        placeholder="Find by car brand"
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
+      />
 
-      <select>
-        <option>Chose a color</option>
+      <select
+        value={carColor}
+        onChange={(event) => setCarColor(event.target.value)}
+      >
+        <option disabled value={carColor}>Chose a color</option>
+        {colorsFromServer.map(({ id, name }) => (
+          <option
+            key={id}
+          >
+            {name}
+          </option>
+        ))}
       </select>
 
       <table>
@@ -25,24 +72,19 @@ export const App: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Ferarri</td>
-            <td style={{ color: 'red' }}>Red</td>
-            <td>500</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Opel</td>
-            <td style={{ color: 'white' }}>White</td>
-            <td>300</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Audi</td>
-            <td style={{ color: 'black' }}>Black</td>
-            <td>300</td>
-          </tr>
+          {vissbleCars.map(({
+            id,
+            brand,
+            rentPrice,
+            color,
+          }) => (
+            <tr key={id}>
+              <td>{id}</td>
+              <td>{brand}</td>
+              <td style={{ color: `${color?.name}` }}>{color?.name}</td>
+              <td>{rentPrice}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

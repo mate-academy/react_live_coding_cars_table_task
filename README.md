@@ -1,4 +1,4 @@
-## [DEMO LINK](https://<replace_your_name>.github.io/react_live_coding_cars_table_task/)
+## [DEMO LINK](https://pozdnya.github.io/react_live_coding_cars_table_task/)
 
 ## Instructions
 
