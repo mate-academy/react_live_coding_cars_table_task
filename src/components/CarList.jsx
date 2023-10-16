@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CarList = ({filterCar}) => {
+const CarList = ({ filterCar }) => {
   return (
     <tbody>
       {filterCar.length > 0 ? (
