@@ -46,7 +46,7 @@ export const App = () => {
       />
 
       <select onChange={event => setNewColor(event.target.value)}>
-        <option>Chose a color</option>
+        <option value={''}>Chose a color</option>
         {colorsFromServer.map(color => (
           <option
             value={color.name}
