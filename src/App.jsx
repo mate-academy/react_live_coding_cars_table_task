@@ -3,9 +3,7 @@ import carsFromServer from './api/cars';
 import colorsFromServer from './api/colors';
 import CarList from './components/CarList';
 
-// 1. Render car with color
-// 2. Add ability to filter car by brand name
-// 3. Add ability to filter car by color
+const SHOW_FULL_DATA = 'show all';
 
 export const App = () => {
   function findCollors(colorId) {
@@ -21,13 +19,22 @@ export const App = () => {
 
   const [currentList, setCurrentList] = useState(data);
   const [sumbol, setSumbol] = useState('');
-  const filtetSybol = sumbol.trim().toLowerCase();
+  const filterSymbol = sumbol.trim().toLowerCase();
 
   const filterCar = currentList.filter(item => item.brand.toLowerCase()
-    .includes(filtetSybol));
+    .includes(filterSymbol));
 
-  function chooseCollor(selectedCollorId) {
-    return currentList.filter((item) => item.colorId === selectedCollorId);
+  // console.log(currentList)
+
+  function chooseCollor(selectedCollorName) {
+    const filterColorData = data
+      .filter((item) => item.color.name === selectedCollorName);
+
+    if (selectedCollorName === SHOW_FULL_DATA) {
+      return setCurrentList(data);
+    }
+
+    return setCurrentList(filterColorData);
   }
 
   return (
@@ -40,13 +47,18 @@ export const App = () => {
       />
 
       <select
-        onChange={() => {
-          setCurrentList((event) => chooseCollor(event.target.value));
+        onChange={(e) => {
+          chooseCollor(e.target.value);
         }}
       >
         <option selected disabled>Choose collor</option>
+        <option>
+          {SHOW_FULL_DATA}
+        </option>
         {colorsFromServer.map((item) => (
-          <option>
+          <option
+            key={item.id}
+          >
             {item.name}
           </option>
         ))}
